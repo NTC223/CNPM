@@ -198,15 +198,15 @@ public class SearchAgentFrm extends JFrame implements ActionListener {
     
     private void navigateToProduct() {
         Agent selectedAgent = getSelectedAgent();
-        ExportReceipt receipt = new ExportReceipt();
+        ExportReceipt exportReceipt = new ExportReceipt();
 
-        receipt.setDate(new Date());
-        receipt.setNote("");
-        receipt.setAgent(selectedAgent);
-        receipt.setUser(user);
+        exportReceipt.setDate(new Date());
+        exportReceipt.setNote("");
+        exportReceipt.setAgent(selectedAgent);
+        exportReceipt.setUser(user);
 
         if (selectedAgent != null) {
-            SearchProductFrm productFrm = new SearchProductFrm(receipt);
+            SearchProductFrm productFrm = new SearchProductFrm(exportReceipt);
             productFrm.setVisible(true);
             dispose();
         }
@@ -224,9 +224,9 @@ public class SearchAgentFrm extends JFrame implements ActionListener {
         String address = (String) model.getValueAt(selectedRow, 2);
         String tel = (String) model.getValueAt(selectedRow, 3);
         
-        AgentDAO supplierDAO = new AgentDAO();
-        ArrayList<Agent> suppliers = supplierDAO.searchAgentByName(name);
-        for (Agent s : suppliers) {
+        AgentDAO agentDAO = new AgentDAO();
+        ArrayList<Agent> agents = agentDAO.searchAgentByName(name);
+        for (Agent s : agents) {
             if (s.getName().equals(name) && s.getAddress().equals(address) && s.getTel().equals(tel)) {
                 return s;
             }

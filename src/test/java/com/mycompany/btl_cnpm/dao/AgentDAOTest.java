@@ -16,11 +16,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
- * @author MSI-PC
+ * @author OS
  */
 public class AgentDAOTest {
     
-    private AgentDAO supplierDAO;
+    private AgentDAO agentDAO;
     
     public AgentDAOTest() {
     }
@@ -35,7 +35,7 @@ public class AgentDAOTest {
     
     @BeforeEach
     public void setUp() {
-        supplierDAO = new AgentDAO();
+        agentDAO = new AgentDAO();
     }
     
     @AfterEach
@@ -43,78 +43,78 @@ public class AgentDAOTest {
     }
 
     @Test
-    public void testSearchSupplierByNameException1() {
-        System.out.println("searchSupplierByName - Exception Case 1");
+    public void testSearchAgentByNameException1() {
+        System.out.println("searchAgentByName - Exception Case 1");
         String key = "xxxxxxxxxxxx";
-        ArrayList<Agent> suppliers = supplierDAO.searchAgentByName(key);
-        assertNotNull(suppliers);
-        assertEquals(0, suppliers.size());
+        ArrayList<Agent> agents = agentDAO.searchAgentByName(key);
+        assertNotNull(agents);
+        assertEquals(0, agents.size());
     }
     
     @Test
-    public void testSearchSupplierByNameException2() {
-        System.out.println("searchSupplierByName - Exception Case 2");
+    public void testSearchAgentByNameException2() {
+        System.out.println("searchAgentByName - Exception Case 2");
         String key = "sd";
-        ArrayList<Agent> suppliers = supplierDAO.searchAgentByName(key);
-        assertNotNull(suppliers);
-        assertEquals(0, suppliers.size());
+        ArrayList<Agent> agents = agentDAO.searchAgentByName(key);
+        assertNotNull(agents);
+        assertEquals(0, agents.size());
     }
 
     @Test
-    public void testSearchSupplierByNameStandard1() {
-        System.out.println("searchSupplierByName - Standard Case 1");
+    public void testSearchAgentByNameStandard1() {
+        System.out.println("searchAgentByName - Standard Case 1");
         String key = "An";
-        ArrayList<Agent> suppliers = supplierDAO.searchAgentByName(key);
-        assertNotNull(suppliers);
-        assertEquals(2, suppliers.size());
-        for(int i = 0; i < suppliers.size(); i++){
-            assertTrue(suppliers.get(i).getName().toLowerCase().contains(key.toLowerCase()));
+        ArrayList<Agent> agents = agentDAO.searchAgentByName(key);
+        assertNotNull(agents);
+        assertEquals(1, agents.size());
+        for(int i = 0; i < agents.size(); i++){
+            assertTrue(agents.get(i).getName().toLowerCase().contains(key.toLowerCase()));
         }
         return;
     }
 
     @Test
-    public void testSearchSupplierByNameStandard2() {
-        System.out.println("searchSupplierByName - Standard Case 2");
+    public void testSearchAgentByNameStandard2() {
+        System.out.println("searchAgentByName - Standard Case 2");
         String key = "B";
-        ArrayList<Agent> suppliers = supplierDAO.searchAgentByName(key);
-        assertNotNull(suppliers);
-        assertEquals(4, suppliers.size());
-        for(int i = 0; i < suppliers.size(); i++){
-            assertTrue(suppliers.get(i).getName().toLowerCase().contains(key.toLowerCase()));
+        ArrayList<Agent> agents = agentDAO.searchAgentByName(key);
+        assertNotNull(agents);
+        assertEquals(3, agents.size());
+        for(int i = 0; i < agents.size(); i++){
+            assertTrue(agents.get(i).getName().toLowerCase().contains(key.toLowerCase()));
         }
         return;
     }
     
     @Test
-    public void testSearchSupplierByNameEmptyKeyword() {
-        System.out.println("searchSupplierByName - Empty Keyword");
+    public void testSearchAgentByNameEmptyKeyword() {
+        System.out.println("searchAgentByName - Empty Keyword");
         String key = "";
-        ArrayList<Agent> suppliers = supplierDAO.searchAgentByName(key);
-        assertNotNull(suppliers);
-        assertTrue(suppliers.size() > 0);
+        ArrayList<Agent> agents = agentDAO.searchAgentByName(key);
+        assertNotNull(agents);
+        assertTrue(agents.size() > 0);
     }
 
     @Test
-    public void testAddSupplier() {
-        System.out.println("addSupplier");
-        Agent supplier = new Agent();
-        String uniqueName = "Test Supplier " + System.currentTimeMillis();
-        supplier.setName(uniqueName);
-        supplier.setAddress("Test Address");
-        supplier.setTel("0123456789");
+    public void testAddAgent() {
+        System.out.println("addAgent");
+        Agent agent = new Agent();
+        String uniqueName = "Test Agent " + System.currentTimeMillis();
+        agent.setName(uniqueName);
+        agent.setAddress("Test Address");   
+        agent.setTel("0123456789");
         
-        boolean result = supplierDAO.addAgent(supplier);
+        boolean result = agentDAO.addAgent(agent);
         
         assertTrue(result);
-        assertTrue(supplier.getId() > 0);
+        assertTrue(agent.getId() > 0);
         
-        ArrayList<Agent> foundSuppliers = supplierDAO.searchAgentByName(uniqueName);
-        assertEquals(1, foundSuppliers.size());
+        ArrayList<Agent> foundAgents = agentDAO.searchAgentByName(uniqueName);
+        assertEquals(1, foundAgents.size());
         
-        Agent foundSupplier = foundSuppliers.get(0);
-        assertEquals(uniqueName, foundSupplier.getName());
-        assertEquals("Test Address", foundSupplier.getAddress());
-        assertEquals("0123456789", foundSupplier.getTel());
+        Agent foundAgent = foundAgents.get(0);
+        assertEquals(uniqueName, foundAgent.getName());
+        assertEquals("Test Address", foundAgent.getAddress());
+        assertEquals("0123456789", foundAgent.getTel());
     }
 }

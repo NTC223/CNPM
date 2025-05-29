@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author MSI-PC
+ * @author OS
  */
 public class ExportReceiptDAO extends DAO {
 
@@ -23,6 +23,9 @@ public class ExportReceiptDAO extends DAO {
     }
 
     public boolean addProductOrder(ExportReceipt ExportReceipt) {
+        if (ExportReceipt.getExportedProducts() == null || ExportReceipt.getExportedProducts().isEmpty()) {
+            return false;
+        }
         String sqlAddProductOrder = "INSERT INTO tblExportReceipt(idUser, idAgent, date, note ) VALUES(?,?,?,?)";
         String sqlAddExportedProduct = "INSERT INTO tblExportedProduct(idExportReceipt, idProduct, quantity, unitPrice) VALUES(?,?,?,?)";
         try {

@@ -27,6 +27,7 @@ import com.mycompany.btl_cnpm.model.ExportedProduct;
 import com.mycompany.btl_cnpm.model.ExportReceipt;
 import com.mycompany.btl_cnpm.model.User;
 import com.mycompany.btl_cnpm.view.searchagent.SearchAgentFrm;
+import com.mycompany.btl_cnpm.view.searchproduct.SearchProductFrm;
 
 public class ConfirmFrm extends JFrame implements ActionListener {
     private JPanel mainPanel, headerPanel, infoPanel, tablePanel, buttonPanel;
@@ -35,10 +36,10 @@ public class ConfirmFrm extends JFrame implements ActionListener {
     private DefaultTableModel tableModel;
     private JButton btnConfirm, btnCancel;
     
-    private ExportReceipt receipt;
+    private ExportReceipt exportReceipt;
     
-    public ConfirmFrm(ExportReceipt receipt) {
-        this.receipt = receipt;
+    public ConfirmFrm(ExportReceipt exportReceipt) {
+        this.exportReceipt = exportReceipt;
         initComponents();
     }
     
@@ -59,7 +60,7 @@ public class ConfirmFrm extends JFrame implements ActionListener {
         headerPanel.add(lblTitle, BorderLayout.WEST);
         
         // User Info
-        lblUserInfo = new JLabel("Logged in as: " + receipt.getUser().getFullname());
+        lblUserInfo = new JLabel("Logged in as: " + exportReceipt.getUser().getFullname());
         lblUserInfo.setFont(new Font("Arial", Font.PLAIN, 12));
         headerPanel.add(lblUserInfo, BorderLayout.EAST);
         
@@ -78,16 +79,16 @@ public class ConfirmFrm extends JFrame implements ActionListener {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         
         gridPanel.add(new JLabel("Created by:"));
-        gridPanel.add(new JLabel(receipt.getUser().getFullname()));
+        gridPanel.add(new JLabel(exportReceipt.getUser().getFullname()));
         
         gridPanel.add(new JLabel("Date:"));
-        gridPanel.add(new JLabel(dateFormat.format(receipt.getDate())));
+        gridPanel.add(new JLabel(dateFormat.format(exportReceipt.getDate())));
         
-        gridPanel.add(new JLabel("Supplier:"));
-        gridPanel.add(new JLabel(receipt.getAgent().getName() + " (Address: " + receipt.getAgent().getAddress() + ", Tel: " + receipt.getAgent().getTel() + ")"));
+        gridPanel.add(new JLabel("Agent:"));
+        gridPanel.add(new JLabel(exportReceipt.getAgent().getName() + " (Address: " + exportReceipt.getAgent().getAddress() + ", Tel: " + exportReceipt.getAgent().getTel() + ")"));
         
         gridPanel.add(new JLabel("Total Items:"));
-        gridPanel.add(new JLabel(String.valueOf(receipt.getTotalProductQuantity())));
+        gridPanel.add(new JLabel(String.valueOf(exportReceipt.getTotalProductQuantity())));
         
         infoPanel.add(gridPanel);
         infoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -110,7 +111,7 @@ public class ConfirmFrm extends JFrame implements ActionListener {
         tblProducts.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
         tblProducts.setRowHeight(25);
     
-        ArrayList<ExportedProduct> products = receipt.getExportedProducts();
+        ArrayList<ExportedProduct> products = exportReceipt.getExportedProducts();
         int stt = 1;
         for (ExportedProduct ip : products) {
             Object[] row = {
@@ -135,7 +136,7 @@ public class ConfirmFrm extends JFrame implements ActionListener {
         lblTotal.setFont(new Font("Arial", Font.BOLD, 14));
         totalPanel.add(lblTotal);
         
-        JLabel txtTotal = new JLabel(String.valueOf(receipt.getTotalPrice()));
+        JLabel txtTotal = new JLabel(String.valueOf(exportReceipt.getTotalPrice()));
         txtTotal.setFont(new Font("Arial", Font.BOLD, 14));
         totalPanel.add(txtTotal);
         
@@ -179,11 +180,11 @@ public class ConfirmFrm extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnConfirm) {
-            ExportReceiptDAO receiptDAO = new ExportReceiptDAO();
+            ExportReceiptDAO exportReceiptDAO = new ExportReceiptDAO();
             
-            if (receiptDAO.addProductOrder(receipt)) {
+            if (exportReceiptDAO.addProductOrder(exportReceipt)) {
                 JOptionPane.showMessageDialog(this, "Receipt confirmed successfully!");
-                backToSupplierFrm(receipt.getUser());
+                backToSearchAgentFrm(exportReceipt.getUser());
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to confirm receipt!");
             }
@@ -194,14 +195,20 @@ public class ConfirmFrm extends JFrame implements ActionListener {
                     JOptionPane.YES_NO_OPTION);
             
             if (choice == JOptionPane.YES_OPTION) {
-                backToSupplierFrm(receipt.getUser());
+                backToSearchProductFrm(exportReceipt);
             }
         }
     }
 
-    private void backToSupplierFrm(User u) {
-        SearchAgentFrm supplierFrm = new SearchAgentFrm(u);
-        supplierFrm.setVisible(true);
+    private void backToSearchAgentFrm(User u) {
+        SearchAgentFrm searchAgentFrm = new SearchAgentFrm(u);
+        searchAgentFrm.setVisible(true);
+        this.dispose();
+    }
+
+    private void backToSearchProductFrm(ExportReceipt receipt) {
+        SearchProductFrm searchProductFrm = new SearchProductFrm(receipt);
+        searchProductFrm.setVisible(true);
         this.dispose();
     }
 } 

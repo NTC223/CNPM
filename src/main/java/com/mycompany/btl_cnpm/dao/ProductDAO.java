@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 /**
  *
- * @author MSI-PC
+ * @author OS
  */
 public class ProductDAO extends DAO {
 

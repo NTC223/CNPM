@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 
 /**
  *
- * @author MSI-PC
+ * @author OS
  */
 public class UserDAO extends DAO {
     

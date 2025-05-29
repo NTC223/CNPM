@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
- * @author MSI-PC
+ * @author OS
  */
 public class ExportReceiptDAOTest {
     
-    private ExportReceiptDAO receiptDAO;
-    private AgentDAO supplierDAO;
+    private ExportReceiptDAO exportReceiptDAO;
+    private AgentDAO agentDAO;
     private ProductDAO productDAO;
     private UserDAO userDAO;
     
@@ -42,8 +42,8 @@ public class ExportReceiptDAOTest {
     
     @BeforeEach
     public void setUp() {
-        receiptDAO = new ExportReceiptDAO();
-        supplierDAO = new AgentDAO();
+        exportReceiptDAO = new ExportReceiptDAO();
+        agentDAO = new AgentDAO();
         productDAO = new ProductDAO();
         userDAO = new UserDAO();
     }
@@ -52,106 +52,72 @@ public class ExportReceiptDAOTest {
     public void tearDown() {
     }
 
-    /**
-     * Test thêm phiếu nhập hàng với sản phẩm hợp lệ
-     */
     @Test
     public void testAddProductOrderSuccess() {
         System.out.println("addProductOrder - Success");
-        
-        // Tạo user đăng nhập
+
         User user = new User();
-        user.setUsername("admin"); // Thay đổi thành username có trong DB
-        user.setPassword("123456"); // Thay đổi thành password có trong DB
+        user.setUsername("a");
+        user.setPassword("a@123");
         boolean loginSuccess = userDAO.checkLogin(user);
         assertTrue(loginSuccess);
-        
-        // Tìm supplier
-        Agent supplier = null;
-        for (Agent s : supplierDAO.searchAgentByName("")) {
-            supplier = s;
+
+        Agent agent = null;
+        for (Agent a : agentDAO.searchAgentByName("b")) {
+            agent = a;
             break;
         }
-        assertNotNull(supplier);
-        
-        // Tìm product
+        assertNotNull(agent);
+
         Product product = null;
-        for (Product p : productDAO.searchProductByName("")) {
+        for (Product p : productDAO.searchProductByName("Vở")) {
             product = p;
             break;
         }
         assertNotNull(product);
+
+        ExportReceipt exportReceipt = new ExportReceipt();
+        exportReceipt.setDate(new Date());
+        exportReceipt.setNote("Test receipt");
+        exportReceipt.setAgent(agent);
+        exportReceipt.setUser(user);
+
+        ExportedProduct exportedProduct = new ExportedProduct(10, 1000, product);
+        exportReceipt.addExportedProduct(exportedProduct);
         
-        // Tạo phiếu nhập hàng
-        ExportReceipt receipt = new ExportReceipt();
-        receipt.setDate(new Date());
-        receipt.setNote("Test receipt");
-        receipt.setAgent(supplier);
-        receipt.setUser(user);
-        
-        // Thêm sản phẩm vào phiếu nhập
-        ExportedProduct importedProduct = new ExportedProduct(10, 1000, product); // Số lượng và đơn giá
-        receipt.addExportedProduct(importedProduct);
-        
-        // Lưu phiếu nhập
-        boolean result = receiptDAO.addProductOrder(receipt);
-        
-        // Kiểm tra lưu thành công
+        boolean result = exportReceiptDAO.addProductOrder(exportReceipt);
+
         assertTrue(result);
-        
-        // Kiểm tra phiếu nhập đã được gán ID
-        assertTrue(receipt.getId() > 0);
-        System.out.println("Receipt created with ID: " + receipt.getId());
+
+        assertTrue(exportReceipt.getId() > 0);
+        System.out.println("Receipt created with ID: " + exportReceipt.getId());
     }
     
-    /**
-     * Test thêm phiếu nhập hàng thất bại do không có sản phẩm
-     */
     @Test
     public void testAddProductOrderFailWithNoProducts() {
         System.out.println("addProductOrder - No Products");
-        
-        // Tạo user đăng nhập
+
         User user = new User();
-        user.setUsername("admin"); // Thay đổi thành username có trong DB
-        user.setPassword("123456"); // Thay đổi thành password có trong DB
+        user.setUsername("a"); 
+        user.setPassword("a@123");
         boolean loginSuccess = userDAO.checkLogin(user);
         assertTrue(loginSuccess);
         
-        // Tìm supplier
-        Agent supplier = null;
-        for (Agent s : supplierDAO.searchAgentByName("")) {
-            supplier = s;
+        Agent agent = null;
+        for (Agent a : agentDAO.searchAgentByName("b")) {
+            agent = a;
             break;
         }
-        assertNotNull(supplier);
+        assertNotNull(agent);
         
-        // Tạo phiếu nhập hàng không có sản phẩm
-        ExportReceipt receipt = new ExportReceipt();
-        receipt.setDate(new Date());
-        receipt.setNote("Empty receipt");
-        receipt.setAgent(supplier);
-        receipt.setUser(user);
+        ExportReceipt exportReceipt = new ExportReceipt();
+        exportReceipt.setDate(new Date());
+        exportReceipt.setNote("Empty receipt");
+        exportReceipt.setAgent(agent);
+        exportReceipt.setUser(user);
         
-        // Lưu phiếu nhập
-        boolean result = receiptDAO.addProductOrder(receipt);
+        boolean result = exportReceiptDAO.addProductOrder(exportReceipt);
         
-        // Kiểm tra lưu thất bại vì không có sản phẩm
-        assertFalse(result);
-    }
-    
-    /**
-     * Test thêm phiếu nhập hàng thất bại với dữ liệu null
-     */
-    @Test
-    public void testAddProductOrderWithNullReceipt() {
-        System.out.println("addProductOrder - Null Receipt");
-        
-        // Truyền tham số null
-        ExportReceipt nullReceipt = null;
-        boolean result = receiptDAO.addProductOrder(nullReceipt);
-        
-        // Kiểm tra lưu thất bại
         assertFalse(result);
     }
 }

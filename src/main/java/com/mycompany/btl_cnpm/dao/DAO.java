@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 
 /**
  *
- * @author
+ * @author OS
  */
 public class DAO {
     protected static Connection conn;

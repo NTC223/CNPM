@@ -6,7 +6,7 @@ package com.mycompany.btl_cnpm.model;
 import java.io.Serializable;
 /**
  *
- * @author MSI-PC
+ * @author OS
  */
 public class User implements Serializable {
     private int id;

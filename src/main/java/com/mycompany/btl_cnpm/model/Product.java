@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author MSI-PC
+ * @author OS
  */
 public class Product implements Serializable {
     private int id;

@@ -43,24 +43,20 @@ public class SearchProductFrm extends JFrame implements ActionListener {
     }
     
     private void initComponents() {
-        // Main panel
         JPanel pnMain = new JPanel();
         pnMain.setLayout(new BorderLayout(10, 10));
         pnMain.setBackground(new Color(240, 240, 240));
         pnMain.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         
-        // Header panel
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(new Color(240, 240, 240));
         
-        // Title panel
         JPanel pnTitle = new JPanel(new FlowLayout(FlowLayout.CENTER));
         pnTitle.setBackground(new Color(240, 240, 240));
         JLabel lblTitle = new JLabel("Search Product");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 24));
         pnTitle.add(lblTitle);
-        
-        // User info panel
+                
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         userPanel.setBackground(new Color(240, 240, 240));
         JLabel lblLoggedIn = new JLabel("Logged in as: " + ExportReceipt.getUser().getFullname());
@@ -70,7 +66,6 @@ public class SearchProductFrm extends JFrame implements ActionListener {
         headerPanel.add(pnTitle, BorderLayout.CENTER);
         headerPanel.add(userPanel, BorderLayout.EAST);
         
-        // Agent info panel
         JPanel pnAgent = new JPanel();
         pnAgent.setLayout(new FlowLayout(FlowLayout.CENTER));
         pnAgent.setBackground(new Color(240, 240, 240));
@@ -86,39 +81,35 @@ public class SearchProductFrm extends JFrame implements ActionListener {
         
         pnMain.add(pnNorth, BorderLayout.NORTH);
         
-        // Search panel
         JPanel pnSearch = new JPanel();
         pnSearch.setLayout(new BoxLayout(pnSearch, BoxLayout.Y_AXIS));
         pnSearch.setBackground(new Color(240, 240, 240));
         pnSearch.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
-        // Input fields panel
-        JPanel pnInputRow1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        pnInputRow1.setBackground(new Color(240, 240, 240));
-        JLabel lblName = new JLabel("Name:", SwingConstants.RIGHT);
+        JPanel pnInputRow = new JPanel(new BorderLayout());
+        pnInputRow.setBackground(new Color(240, 240, 240));
+
+        JPanel pnLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        pnLeft.setBackground(new Color(240, 240, 240));
+        JLabel lblName = new JLabel("Name:");
         lblName.setPreferredSize(new Dimension(100, 25));
-        pnInputRow1.add(lblName);
-        
+        pnLeft.add(lblName);
+
         txtName = new JTextField(30);
-        pnInputRow1.add(txtName);
-        
-        pnSearch.add(pnInputRow1);
-        
-        // Button panel
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.setBackground(new Color(240, 240, 240));
-        
+        pnLeft.add(txtName);
+
+        JPanel pnRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        pnRight.setBackground(new Color(240, 240, 240));
         btnSearch = new JButton("Search");
         btnSearch.setPreferredSize(new Dimension(100, 25));
         btnSearch.addActionListener(this);
+        pnRight.add(btnSearch);
+
+        pnInputRow.add(pnLeft, BorderLayout.WEST);
+        pnInputRow.add(pnRight, BorderLayout.EAST);
+
+        pnSearch.add(pnInputRow);
         
-        buttonPanel.add(btnSearch);
-        
-        pnSearch.add(buttonPanel);
-        
-        pnMain.add(pnSearch, BorderLayout.CENTER);
-        
-        // Table panel
         JPanel pnTable = new JPanel();
         pnTable.setLayout(new BorderLayout());
         pnTable.setBackground(new Color(240, 240, 240));
@@ -157,20 +148,21 @@ public class SearchProductFrm extends JFrame implements ActionListener {
         scrollPane.setPreferredSize(new Dimension(500, 200));
         pnTable.add(scrollPane, BorderLayout.CENTER);
         
-        JPanel pnSouth = new JPanel(new BorderLayout());
-        pnSouth.setBackground(new Color(240, 240, 240));
-        pnSouth.add(pnTable, BorderLayout.CENTER);
-        
-        // Add Next button panel
+        JPanel pnCenter = new JPanel();
+        pnCenter.setLayout(new BoxLayout(pnCenter, BoxLayout.Y_AXIS));
+        pnCenter.setBackground(new Color(240, 240, 240));
+        pnCenter.add(pnSearch);
+        pnCenter.add(pnTable);
+
+        pnMain.add(pnCenter, BorderLayout.CENTER);
+
         JPanel nextButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         nextButtonPanel.setBackground(new Color(240, 240, 240));
         JButton btnNext = new JButton("Next");
         btnNext.setPreferredSize(new Dimension(100, 30));
         btnNext.addActionListener(this);
         nextButtonPanel.add(btnNext);
-        pnSouth.add(nextButtonPanel, BorderLayout.SOUTH);
-        
-        pnMain.add(pnSouth, BorderLayout.SOUTH);
+        pnMain.add(nextButtonPanel, BorderLayout.SOUTH);
         
         this.setContentPane(pnMain);
         this.setSize(650, 550);

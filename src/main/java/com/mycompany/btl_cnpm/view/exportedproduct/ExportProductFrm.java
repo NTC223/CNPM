@@ -108,7 +108,7 @@ public class ExportProductFrm extends JFrame implements ActionListener {
         formPanel.add(productInfoPanel);
         formPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         
-        // Import details panel
+        // Export details panel
         JPanel exportDetailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         exportDetailsPanel.setBackground(new Color(240, 240, 240));
         exportDetailsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Export Details"));

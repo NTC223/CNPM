@@ -8,7 +8,7 @@ import com.mycompany.btl_cnpm.view.user.LoginFrm;
 
 /**
  *
- * @author MSI-PC
+ * @author OS
  */
 public class BTL_CNPM {
 

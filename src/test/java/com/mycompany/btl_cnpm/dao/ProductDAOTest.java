@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
- * @author MSI-PC
+ * @author OS
  */
 public class ProductDAOTest {
     
@@ -63,7 +63,7 @@ public class ProductDAOTest {
     @Test
     public void testSearchProductByNameStandard1() {
         System.out.println("searchProductByName - Standard Case 1");
-        String key = "Pen";
+        String key = "Bút";
         ArrayList<Product> products = productDAO.searchProductByName(key);
         
         assertNotNull(products);
@@ -78,11 +78,11 @@ public class ProductDAOTest {
     @Test
     public void testSearchProductByNameStandard2() {
         System.out.println("searchProductByName - Standard Case 2");
-        String key = "Book";
+        String key = "Vở";
         ArrayList<Product> products = productDAO.searchProductByName(key);
         
         assertNotNull(products);
-        assertEquals(2, products.size());
+        assertEquals(3, products.size());
         
         for(int i = 0; i < products.size(); i++){
 			assertTrue(products.get(i).getName().toLowerCase().contains(key.toLowerCase()));
@@ -100,8 +100,4 @@ public class ProductDAOTest {
         assertNotNull(products);
         assertTrue(products.size() > 0);
     }
-
-    /**
-     * Test of addProduct method
-     */
 }
